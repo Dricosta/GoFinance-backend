@@ -22,8 +22,6 @@ export default class AddCategoryIdToTransactions1589313954498
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE'
       }))
-
-
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

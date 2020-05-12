@@ -53,28 +53,35 @@ class CreateTransactionService {
       throw new AppError('Você não possui saldo suficiente', 400);
     }
 
-    const checkCategoryExists = await categoryRepository.findOne({
+
+    // let transactionCategory = await categoryRepository.findOne({
+    //   where: {
+    //     title: category
+    //   }
+    // })
+
+    let checkCategoryExists = await categoryRepository.findOne({
       where: { title: category }
     });
 
     if(!checkCategoryExists){
       /* se não existir essa categoria ele cria */
-      const categoryCreate = categoryRepository.create({
+      checkCategoryExists = categoryRepository.create({
         title: category
       })
 
-      await categoryRepository.save(categoryCreate);
+      await categoryRepository.save(checkCategoryExists);
     }
 
-    const CategoryExist = await categoryRepository.findOne({
-      where: { title: category }
-    })
+    // const CategoryExist = await categoryRepository.findOne({
+    //   where: { title: category }
+    // })
 
     const transaction = transactionRepository.create({
       title,
       value,
       type,
-      category_id: CategoryExist && CategoryExist.id
+      category: checkCategoryExists
     })
 
     await transactionRepository.save(transaction);
